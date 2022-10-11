@@ -31,7 +31,7 @@
 <style lang="scss">
 	@use '../lib/assets/styles/mixins.scss' as *;
 	.author_container {
-		height: 100%;
+		height: 20hv;
 		min-width: 0;
 		display: flex;
 		flex-direction: column;

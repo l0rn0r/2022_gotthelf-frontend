@@ -39,7 +39,7 @@
 	const sentences = [
 		'Nur keine Angst.',
 		'Ich bin intelligent, künstlich intelligent.',
-		`Ich schreibe Literatur. Ich kann Robert Walser und Emmy Hennings.`
+		`Ich schreibe Literatur. Ich kann Jeremias Gotthelf.`
 	];
 
 	/**
@@ -122,9 +122,9 @@
 <style lang="scss">
 	@use '../lib/assets/styles/mixins.scss' as *;
 	.container {
-		height: calc(100vh - 12vw);
+		//height: calc(100vh - 12vw);
 		display: grid;
-		// justify-content: center;
+		justify-content: center;
 		align-content: center;
 	}
 
@@ -152,7 +152,7 @@
 	}*/
 
 	.config-container {
-		max-height: 85vh;
+		max-height: 20vh;
 		display: flex;
 		gap: 1em;
 		justify-items: center;

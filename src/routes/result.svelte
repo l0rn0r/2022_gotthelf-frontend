@@ -1,11 +1,10 @@
 <script>
 	import { config } from '$lib/stores';
-	import Print from '$lib/Print.svelte';
-	import Qrcode from '$lib/Qrcode.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import info from '$lib/assets/text.json';
 	import { listen } from 'svelte-idle';
+	import { log } from 'fractils';
 
 	listen({
 		timer: 4 * 60 * 1000,
@@ -13,20 +12,25 @@
 	});
 
 	let queryCounter = 0;
-	let sentence = '';
+	let sentence;
 	let dots = '';
 	const failedSentence = 'Da ging etwas bei der Abfrage schief.';
 
 	async function query(data) {
+		console.log(info[$config.author].api_url)
 		const response = await fetch(info[$config.author].api_url, {
-			headers: { Authorization: `Bearer ${import.meta.env.VITE_HUGGINGFACE_KEY}` },
 			method: 'POST',
+			headers: {
+				'accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			mode: 'cors',
 			body: JSON.stringify(data)
 		});
 		if (response.ok) {
 			const result = await response.json();
-			console.log(result[0].generated_text);
-			return result[0].generated_text;
+			console.log(result);
+			return result;
 		} else {
 			queryCounter++;
 			console.log('failed');
@@ -38,17 +42,11 @@
 	}
 
 	const payload = {
-		inputs: `Heute schreibe ich über ${$config.input},`,
-		parameters: {
-			temperature: $config.temp,
-			top_k: 100,
-			num_return_sequences: 1,
-			max_new_tokens: 100,
-			repetition_penalty: 50.01
-		},
-		options: {
-			use_cache: false,
-		}
+		sentence: `${$config.input}`,
+		temperature: $config.temp,
+		top_k: 100,
+		num_samples: 1,
+		max_new_tokens: 100,
 	};
 
 	const trimEnd = (/** @type {string} */ str) => {
@@ -61,40 +59,14 @@
 		return str;
 	};
 
-	const postSentence = (/** @type {string} */ sentence) => {
-		const res = fetch('/send', {
-			method: 'POST',
-			body: JSON.stringify({
-				sentence: sentence,
-				author: info[$config.author]?.fullname
-			})
-		});
-		return res;
-	};
-
-	const saveSentence = (sentence) => {
-		const res = fetch('/save', {
-			method: 'POST',
-			body: JSON.stringify({
-				sentence: sentence,
-				author: $config.author,
-				input: $config.input,
-				temp: $config.temp
-			})
-		});
-		return res;
-	};
-
 	onMount(async () => {
 		setInterval(() => {
 			dots = dots === '...' ? '' : dots + '.';
 		}, 300);
 		if ($config.author && $config.temp && $config.input) {
-			sentence = trimEnd(await query(payload));
-			if (sentence !== failedSentence) {
-				postSentence(sentence);
-				saveSentence(sentence);
-			}
+			console.log(payload);
+			sentence = await query(payload);
+			console.log(sentence)
 		} else {
 			console.log('no author or temp or input, redirecting to home');
 			goto('/');
@@ -110,20 +82,16 @@
 	<main>
 		<div class="scrollblock">
 		{#if sentence}
-			<p>{sentence}</p>
+			<p><small>Input:</small><br>{trimEnd(sentence.input)}</p><hr>
+			<p><small>Normalisierte Paraphrasierung:</small><br>{trimEnd(sentence.greedy_output)}</p><hr>
+			<p><small>Gotthelf Paraphrasierung:</small><br>{trimEnd(sentence.output[0])}</p>
 		{:else}
 				<p>Ich schreibe{dots}</p>
 		{/if}
 		</div>
-		<img alt={info[$config.author]?.fullname} src={`${$config?.author || 'walser'}.jpg`} />
+		<img alt={info[$config.author]?.fullname} src={`${$config?.author || 'gotthelf'}.jpg`} />
 	</main>
 	<aside>
-		{#if sentence}
-			<Print {sentence} />
-			<div class="qr">
-				<b>Teilen:</b><Qrcode {sentence} />
-			</div>
-		{/if}
 		<a class="button" href="/" on:click={config.return}>Startseite</a>
 		<a class="button" href="/info">Informationen</a>
 	</aside>

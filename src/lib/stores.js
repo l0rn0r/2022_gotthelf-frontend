@@ -10,14 +10,14 @@ function createConfig(defaults) {
     subscribe,
     set,
     reset: () => set({
-        /** @type {""|"hennings"|"walser"} */
+        /** @type {""|"gotthelf"} */
         author: import.meta.env.VITE_AUTHOR ?? '',
         input: '',
         temp: 0.6,
         intro: true
     }),
     return: () => set({
-        /** @type {""|"hennings"|"walser"} */
+        /** @type {""|"gotthelf"} */
         author: import.meta.env.VITE_AUTHOR ?? '',
         input: '',
         temp: 0.6,
@@ -30,9 +30,9 @@ function createConfig(defaults) {
  * @param value {number}
  */
 export const config = createConfig({
-	/** @type {""|"hennings"|"walser"} */
+	/** @type {""|"gotthelf"} */
 	author: import.meta.env.VITE_AUTHOR ?? '',
 	input: '',
 	temp: 0.6,
-  intro: true
+  intro: false
 });

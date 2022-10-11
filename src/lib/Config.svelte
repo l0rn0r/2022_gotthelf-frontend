@@ -21,32 +21,32 @@
 
 </script>
 
-<h2>Über was soll ich schreiben?</h2>
+<h2>Was soll ich paraphrasieren?</h2>
 
 <form action="/result" on:submit|preventDefault={() => goto('result')}>
 	<p>
-		"Heute schreibe ich über <input
+		"<input
 			type="text"
-			pattern="[^ ]+ ?[^ ]+"
+			pattern=".+"
 			bind:this={inputField}
 			use:focus
 			required
 			on:input={handleValidity}
-		/>, ..."
+		/>"
 	</p>
 
 	<label for="temperature"
 		>Soll ich {info[$config.author].genitiv} Wortschatz nutzen? Oder {info[$config.author].pronoun}e Art, Sätze zu formen?
 	</label>
 	<div class="rangeslider">
-		<input id="temperature" type="range" min="0.3" max="0.9" step="0.03" bind:value={$config.temp} />
+		<input id="temperature" type="range" min="0.1" max="0.9" step="0.03" bind:value={$config.temp} />
 		<ol>
-			<li class:active={$config.temp === 0.3}>Wortschatz</li>
+			<li class:active={$config.temp === 0.1}>Wortschatz</li>
 			<li class:active={$config.temp === 0.9}>Satzbau</li>
 		</ol>
 	</div>
 
-	<button type="submit" class="submit">Schreiben</button>
+	<button type="submit" class="submit">Paraphrasieren</button>
 </form>
 
 <style lang="scss">
@@ -104,6 +104,6 @@
 	}
 
 	input[type='text'] {
-		width: 12rem;
+		width: 90%;
 	}
 </style>
