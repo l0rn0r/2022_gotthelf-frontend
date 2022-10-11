@@ -31,7 +31,7 @@ function createConfig(defaults) {
  */
 export const config = createConfig({
 	/** @type {""|"gotthelf"} */
-	author: import.meta.env.VITE_AUTHOR ?? '',
+	author: import.meta.env.VITE_AUTHOR ?? 'gotthelf',
 	input: '',
 	temp: 0.6,
   intro: false
