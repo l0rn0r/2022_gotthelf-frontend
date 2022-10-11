@@ -11,14 +11,14 @@ function createConfig(defaults) {
     set,
     reset: () => set({
         /** @type {""|"gotthelf"} */
-        author: import.meta.env.VITE_AUTHOR ?? '',
+        author: import.meta.env.VITE_AUTHOR ?? 'gotthelf',
         input: '',
         temp: 0.6,
-        intro: true
+        intro: false
     }),
     return: () => set({
         /** @type {""|"gotthelf"} */
-        author: import.meta.env.VITE_AUTHOR ?? '',
+        author: import.meta.env.VITE_AUTHOR ?? 'gotthelf',
         input: '',
         temp: 0.6,
         intro: false
