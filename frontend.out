@@ -1,0 +1,7 @@
+nohup: ignoring input
+
+> 2022-textgenerator-frontend-nb@0.0.1 preview
+> vite preview --port 3000
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: use --host to expose
